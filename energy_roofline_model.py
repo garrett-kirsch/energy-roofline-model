@@ -14,7 +14,7 @@ def draw_energy_efficiency():
 
     # Energy Efficiency -> EE_s
     x = np.linspace(1e-6, 50, 1000)          # OI axis (flop / byte)
-    y_EE_s = 1 / (e_p + (e_m / x) + (p_0 / t_s))  # efficiency (1/pJ)
+    y_EE_s = 1 / (e_p + (e_m / x) + (p_0 / t_s ))  # efficiency (1/pJ)
 
     ax.clear()
     ax.plot(x, y_EE_s, label="Energy efficiency")
@@ -24,7 +24,7 @@ def draw_energy_efficiency():
     ax.plot(x, y_E_senv, label="E_senv")
 
     ax.set_xlabel("Operational Intensity (flop / byte)")
-    ax.set_ylabel("Energy Efficiency (1/pJ)")
+    ax.set_ylabel("Energy Efficiency (flop / joule)")
     ax.grid(True)
     ax.legend()
     canvas.draw_idle()
@@ -41,7 +41,7 @@ canvas.get_tk_widget().grid(row=0, column=0, columnspan=3, padx=10, pady=10)
 # parameters
 e_p_var = tk.DoubleVar(value=1.0)   # pJ per flop
 e_m_var = tk.DoubleVar(value=10.0)  # pJ per byte
-p_0_var = tk.DoubleVar(value=200.0) # mW background → pJ/sec
+p_0_var = tk.DoubleVar(value=200.0) # background power → pJ/sec
 t_s_var = tk.DoubleVar(value=10)   # peak FLOP/s
 
 def add_control(row, label, var, frm, to_):
@@ -54,9 +54,9 @@ def add_control(row, label, var, frm, to_):
     entry.bind("<Return>", lambda *_: draw_energy_efficiency())
 
 root.columnconfigure(1, weight=1)
-add_control(1, "εₚ  (pJ / flop)",  e_p_var,  0.1, 50)
+add_control(1, "εₚ  (pJ / flop)",  e_p_var,  1, 50)
 add_control(2, "εₘ  (pJ / byte)",  e_m_var,  1,   200)
-add_control(3, "P₀   (mW)",        p_0_var,  10,  1000)
+add_control(3, "P₀   (pW)",        p_0_var,  10,  1000)
 add_control(4, "Tₛ   (GFLOP/s)",   t_s_var,  1,  1000)
 
 draw_energy_efficiency()
